@@ -1,0 +1,154 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+nav{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    padding: 0.5rem;
+    margin: 1rem;
+}
+
+nav .name{
+    /*padding-left: 4rem;*/
+    white-space: nowrap;
+    border-bottom: solid 2px #5C2FC2;
+    border-radius: 10px;
+    padding: 0.2rem;
+}
+
+nav div{
+    font-weight: 500;
+    font-size: 1.4rem;
+    color: #5C2FC2;
+}
+
+.menu{
+    display: flex;
+    gap: 1rem;
+}
+
+.menu a{
+    text-decoration: none;
+    /*margin: 0.5rem;*/
+    color: #5C2FC2;
+    /*padding: 0.5rem;*/
+    font-weight: 500;
+    font-size: 1.1rem;
+    border: solid 2px #5C2FC2;
+    border-radius: 10px;
+    padding: 0.3rem;
+}
+.menu a:hover{
+    color: #f5f3f7;
+    
+}
+
+@media screen and (min-width:768px) {
+    
+    nav{
+        
+        padding: 0.7rem;
+        margin: 1rem;
+    }
+    
+    nav .name{
+        margin-left: 3rem;
+    }
+    
+    nav div{
+        font-weight: 700;
+        font-size: 1.5rem;
+    }
+    
+    .menu{
+        margin-right: 2rem;
+        display: flex;
+        gap: 2rem;
+    }
+    
+    .menu a{
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1.5rem;
+        padding: 0.4rem;        
+    }
+    
+}
+
+@media screen and (min-width:1024px) {
+    
+    nav{
+        
+        padding: 1rem;
+        margin: 1rem;
+    }
+    
+    nav .name{
+        margin-left: 5rem;
+    }
+    
+    nav div{
+        font-weight: 900;
+        font-size: 1.8rem;
+    }
+    
+    .menu{
+        margin-right: 2rem;
+        display: flex;
+        gap: 2rem;
+    }
+    
+    .menu a{
+        text-decoration: none;
+        font-weight: 900;
+        font-size: 1.8rem;
+        padding: 0.4rem;        
+    }
+    
+}
+
+
+body{
+    background-image: linear-gradient(to bottom right, #B5EAEA, #3DB2FF);
+
+}
+
+section{
+    width: 100%;
+    height: 100%;
+    
+}
+
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.heading h1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: underline;
+}
+
+.content{
+    max-width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+}
+
+.text {
+    text-align: justify;
+    padding: 1rem;
+    width: 100%;
+}
+h2{
+    margin-bottom: 1rem;
+}
