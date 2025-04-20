@@ -1,3 +1,117 @@
+document.getElementById("loading").style.display = "none"
+document.getElementById("bigCont").style.display = "none"
+document.getElementById("userCont").style.display = "none"
+document.getElementById("oppNameCont").style.display = "none"
+document.getElementById("valueCont").style.display = "none"
+document.getElementById("whosTurn").style.display = "none"
+document.getElementById("reset-btn").style.display = "none"
+
+const socket = io();
+let name;
+
+document.getElementById("find").addEventListener("click",function(){
+
+    console.log("Find button clicked");
+
+    name = document.getElementById("name").value;
+
+    document.getElementById("user").innerText = name
+
+    if(name == null || name == ''){
+        alert("enter a name")
+    }else{
+        socket.emit("find",{name:name})
+
+        document.getElementById("loading").style.display = "block";
+        document.getElementById("find").disabled = true;
+    }
+
+})
+
+socket.on("find",(e)=>{
+    const allplayersArray = e.allplayers
+
+    // Find the game this player is in
+    const foundObj = allplayersArray.find(obj => obj.p1.p1name === `${name}` || obj.p2.p2name === `${name}`)
+    
+    // Wait until both players are present in the match
+    if (!foundObj || !foundObj.p1.p1name || !foundObj.p2.p2name) {
+        console.log("Waiting for an opponent...");
+        return; // Still waiting
+    }
+    
+    console.log("Opponent found:", foundObj);
+
+    console.log(allplayersArray)
+
+    document.getElementById("userCont").style.display = "block"
+    document.getElementById("oppNameCont").style.display = "block"
+    document.getElementById("valueCont").style.display = "none"
+    document.getElementById("loading").style.display = "none"
+    document.getElementById("name").style.display = "none"
+    document.getElementById("find").style.display = "none"
+    document.getElementById("enterName").style.display = "none"
+    document.getElementById("bigCont").style.display = "block"
+    document.getElementById("whosTurn").style.display = "block"
+    document.getElementById("whosTurn").innerText = "X's Turn"
+
+    document.getElementById("reset-btn").style.display = "none"
+
+    let oppName
+
+    let value
+
+
+    if (foundObj.p1.p1name === name) {
+        oppName = foundObj.p2.p2name;
+        value = foundObj.p2.p2value;
+    } else {
+        oppName = foundObj.p1.p1name;
+        value = foundObj.p1.p1value;
+    }
+    
+
+    /*foundObj.p1.p1name == `${name}` ? oppName = foundObj.p2.p2name : oppName = foundObj.p1.p1name
+
+    foundObj.p1.p1name == `${name}` ? value = foundObj.p2.p2value : value = foundObj.p1.p1value*/
+
+    document.getElementById("oppName").innerText = oppName
+    document.getElementById("value").innerText = value
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 let boxes = document.querySelectorAll(".box");
 let resetBtn = document.querySelector("#reset-btn");
 let newBtn = document.querySelector("#new-btn");
@@ -96,3 +210,4 @@ const checkWinner = () => {
 
 newBtn.addEventListener("click", resetGame);
 resetBtn.addEventListener("click", resetGame);
+
