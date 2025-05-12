@@ -46,7 +46,7 @@ socket.on("find",(e)=>{
 
     document.getElementById("userCont").style.display = "block"
     document.getElementById("oppNameCont").style.display = "block"
-    document.getElementById("valueCont").style.display = "none"
+    document.getElementById("valueCont").style.display = "block"
     document.getElementById("loading").style.display = "none"
     document.getElementById("name").style.display = "none"
     document.getElementById("find").style.display = "none"
