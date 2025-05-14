@@ -1,140 +1,110 @@
+const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
 
-const express  = require("express")
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
 
-const path = require("path")
-const http = require("http")
-const socketIO = require("socket.io");
-
-const app = express()
-const server = http.createServer(app)
-const io = socketIO(server);
-
-
-const {Server} = require("socket.io")
-
-
-//const io = new Server(server)
-//const io = require("socket.io")(http);
-
-// Serve static files (CSS, JS, IMG folders, etc.)
+const path = require("path");
 app.use(express.static(path.join(__dirname, "..")));
 
-// Serve main.html at root
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "main.html"));
-});
+const PORT = 3000;
 
+app.use(express.static("public"));
 
 let waitingPlayer = null;
-let games = [];
+let games = {};
 
-
-/*io.on("connection", (socket) => {
-    console.log("User connected");
-  
-    socket.on("find", (data) => {
-      console.log("Find request from:", data.name);
-  
-      socket.emit("find", {
-        allplayers: [
-          {
-            p1: { p1name: data.name, p1value: "X" },
-            p2: { p2name: "Opponent", p2value: "O" },
-          },
-        ],
-      });
-    });
-  });*/
-
-  io.on("connection", (socket) => {
-    console.log("User connected");
+io.on("connection", (socket) => {
+    console.log(`New Client connected: ${socket.id}`);
 
     socket.on("find", ({ name }) => {
-        console.log(`Find request from: ${name}`);
+        socket.playerName = name;
 
-        if (waitingPlayer == null) {
-            // No waiting player yet, store current player
-            waitingPlayer = {
-                id: socket.id,
-                name: name
-            };
+        if (waitingPlayer === null) {
+            // No one waiting, this player waits
+            waitingPlayer = socket;
+            console.log(`${name} is waiting for a player...`);
         } else {
-            // Match found, create game
-            const player1 = {
-                socketId: waitingPlayer.id,
-                p1name: waitingPlayer.name,
-                p1value: "X"
+            // Match found
+            const playerX = waitingPlayer;
+            const playerO = socket;
+            const gameId = `${playerX.id}#${playerO.id}`;
+
+            games[gameId] = {
+                p1: playerX,
+                p2: playerO,
+                turn: "X"
             };
 
-            const player2 = {
-                socketId: socket.id,
-                p2name: name,
-                p2value: "O"
+            playerX.gameId = gameId;
+            playerO.gameId = gameId;
+
+            console.log(`Game started between ${playerX.playerName} and ${playerO.playerName}`);
+
+            const playerObj = {
+                allplayers: [
+                    {
+                        p1: { p1name: playerX.playerName, p1value: "X" },
+                        p2: { p2name: playerO.playerName, p2value: "O" }
+                    }
+                ]
             };
 
-            const game = { p1: player1, p2: player2 };
-            games.push(game);
+            playerX.emit("find", playerObj);
+            playerO.emit("find", playerObj);
 
-            // Notify both players
-            io.to(player1.socketId).emit("find", { allplayers: [game] });
-            io.to(player2.socketId).emit("find", { allplayers: [game] });
+           playerX.emit("game-start", {
+                symbol: "X",
+                turn: "X",      
+                yourTurn: true
+            });
 
-            waitingPlayer = null; // Reset for next match
+            playerO.emit("game-start", {
+                symbol: "O",
+                turn: "X",
+                yourTurn: false
+            });
+
+            waitingPlayer = null;
+        }
+    });
+
+    socket.on("make-move", ({ index, symbol }) => {
+        const gameId = socket.gameId;
+        const game = games[gameId];
+        if (!game) return;
+
+        const opponent = (game.p1 === socket) ? game.p2 : game.p1;
+        opponent.emit("opponent-move", { index, symbol });
+
+        game.turn = (symbol === "X") ? "O" : "X";
+    });
+
+    socket.on("disconnect", () => {
+        console.log(`Client disconnected: ${socket.id}`);
+
+        if (waitingPlayer === socket) {
+            waitingPlayer = null;
+        }
+
+        const gameId = socket.gameId;
+        if (gameId && games[gameId]) {
+            const opponent = (games[gameId].p1 === socket)
+                ? games[gameId].p2
+                : games[gameId].p1;
+
+            if (opponent) {
+                opponent.emit("opponent-left");
+            }
+
+            delete games[gameId];
         }
     });
 });
 
-  const PORT = 3000;
-  server.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-  });
 
-
-//app.use(express.static(path.resolve("")))
-
-/*
-let arr=[]
-let playingArray=[]
-
-io.on("connection",(socket)=>{
-    socket.on("find",(e) => {
-        if(e.name != null){
-            arr.push(e.name)
-
-            if(arr.length >= 2){
-                let p1obj = {
-                    p1name: arr[0],
-                    p1value: "X",
-                    p1move: ""
-                }
-                let p2obj = {
-                    p2name: arr[1],
-                    p2value: "O",
-                    p2move: ""
-                }
-
-                let obj={
-                    p1:p1obj,
-                    p2:p2obj
-                }
-                playingArray.push(obj)
-
-                arr.splice(0,2)
-
-                io.emit("find",{allplayer: playingArray})
-            }
-        }
-    })
-})
-    */
-/*
-app.get("/",(req,res)=>{
-    return res.sendFile("main.html")
-})
-
-server.listen(3000,()=>{
-    console.log("port connected to 3000")
-})
-*/
-
-
+server.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});
