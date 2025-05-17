@@ -94,12 +94,7 @@ socket.on("opponent-move", ({index, symbol}) => {
     boxes[index].disabled = true
     boxes[index].style.color = symbol === "X" ? "#A03C78" : "#76BA99"
 
-    /*const whosTurnElement = document.getElementById("whosTurn");
-    if (whosTurnElement) {
-        whosTurnElement.innerText = `${turn}'s Turn`;
-    } else {
-        console.error("Element with id 'whosTurn' not found.");
-    }*/
+    
     isMyTurn = true
     document.getElementById("whosTurn").innerText = `${playerSymbol}'s Turn`
 
@@ -142,7 +137,19 @@ function showWinner(winner){
     msg.innerText = `🎉 Winner is ${winner}!`
     msgContainer.classList.remove("hide")
     disabledBoxes()
+
+    document.getElementById("whosTurn").style.display = "none"
 }
+
+
+function gameDraw() {
+    msg.innerText = `It's a Draw! 🤝`
+    msgContainer.classList.remove("hide")
+    disabledBoxes()
+    document.getElementById("whosTurn").style.display = "none"  // Hide turn display
+}
+
+
 
 function disabledBoxes(){
     boxes.forEach(box => box.disabled = true)
@@ -159,6 +166,7 @@ function resetGame(){
     enabledBoxes();
     msgContainer.classList.add("hide")
     isMyTurn = playerSymbol === "X"
+    document.getElementById("whosTurn").style.display = "block"
     document.getElementById("whosTurn").innerText = "X's Turn"
 }
 
