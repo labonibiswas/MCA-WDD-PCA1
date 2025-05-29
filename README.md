@@ -11,15 +11,25 @@ A simple yet fun **Multiplayer Tic Tac Toe** game built using **HTML, CSS, Node.
 
 ## 📁 Folder Structure
 
-tic-tac-toe/
-├── public/
-│ ├── index.html
-│ ├── style.css
+PCA-1-TIC-TAC-TOE/
+├── CSS/
+│ ├── about.css
+│ ├── home.css
+│ └── main.css
+├── IMG/
+│ ├── loading.gif
+│ └── Tic-Tak-Toe_board.avif
+├── JS/
 │ └── script.js
-├── server.js
-├── package.json
+├── server/
+│ ├── node_modules/
+│ ├── index.js
+│ ├── package.json
+│ └── package-lock.json
+├── about.html
+├── index.html
+├── main.html
 └── README.md
-
 
 ## 🛠️ Tech Stack
 
