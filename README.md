@@ -40,7 +40,7 @@ PCA-1-TIC-TAC-TOE/
 
 ### Clone the repository
 
-git clone [https://github.com/your-username/tic-tac-toe.git](https://github.com/labonibiswas/MCA-WDD-PCA1.git)
+git clone [https://github.com/labonibiswas/MCA-WDD-PCA1.git]
 cd tic-tac-toe
 
 **Install dependencies**
