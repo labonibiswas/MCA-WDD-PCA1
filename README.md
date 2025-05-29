@@ -2,10 +2,6 @@
 
 A simple yet fun **Multiplayer Tic Tac Toe** game built using **HTML, CSS, Node.js, and Express.js**. Play with your friend in real-time via a shared browser session!
 
-## 🖼️ Demo
-
-*Add a screenshot or screen recording of the game here.*
-
 ## 🚀 Features
 
 - 🎯 Two-player real-time gameplay
@@ -34,7 +30,7 @@ tic-tac-toe/
 
 ### Clone the repository
 
-git clone https://github.com/your-username/tic-tac-toe.git
+git clone [https://github.com/your-username/tic-tac-toe.git](https://github.com/labonibiswas/MCA-WDD-PCA1.git)
 cd tic-tac-toe
 
 **Install dependencies**
