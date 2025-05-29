@@ -40,16 +40,16 @@ PCA-1-TIC-TAC-TOE/
 
 ### Clone the repository
 
-git clone [https://github.com/labonibiswas/MCA-WDD-PCA1.git]
+git clone [https://github.com/labonibiswas/MCA-WDD-PCA1.git] <br>
 cd tic-tac-toe
 
-**Install dependencies**
+**Install dependencies**<br>
 npm install
 
--**Start the server**
+-**Start the server**<br>
 node server.js
 
-**Open in browser**
+**Open in browser**<br>
 Visit http://localhost:3000 in two different browser tabs or share the link with a friend on the same network to play!
 
 ## 🤝 Contributing
